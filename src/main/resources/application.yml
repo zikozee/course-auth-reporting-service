@@ -15,7 +15,12 @@ quarkus:
 
   hibernate-orm:
     scripts:
-      generation: none
+      # generate entity script
+#      generation:
+#        ~: create
+#        create-target: schema-create.sql
+    schema-management:
+      strategy: validate
 
 
 
