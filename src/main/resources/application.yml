@@ -1,0 +1,40 @@
+quarkus:
+  http:
+    root-path: /reporting
+    port: 7070
+  application:
+    name: reporting-service
+  datasource:
+    db-kind: postgresql
+    username: ${REPORTING_DB_USERNAME:postgres}
+    password: ${REPORTING_DB_PASSWORD:postgres}
+    jdbc:
+      url: jdbc:postgresql://${REPORTING_DB_HOSTNAME:localhost}:5432/${REPORTING_DB_NAME:auth_demo}
+      max-size: 10
+      ide-removal-interval: 2M
+
+  hibernate-orm:
+    scripts:
+      generation: none
+
+
+
+  rest-client:
+    read-timeout: 30000
+    connect-timeout: 2000
+    connection-pool-size: 10
+
+  oidc:
+    roles:
+      role-claim-path:
+        - "authorities"
+    auth-server-url: ${AUTH_SERVER_URI:http://127.0.0.1:8080}
+    client-id: ${CLIENT_ID:oidc-client4}
+    credentials:
+      secret: ${CREDENTIALS_SECRET:secret4}
+    token:
+      #This property must be changed with the actual public host-name, It will be varying from server to server.
+      issuer: ${OIDC_ISSUER:any}
+      #Audience validation
+      audience: "reporting-service"
+
