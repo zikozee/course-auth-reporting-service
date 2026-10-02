@@ -5,6 +5,8 @@ import com.zee.reporting.datatype.MessageType;
 import com.zee.reporting.dto.ApiResponse;
 import com.zee.reporting.dto.PaymentDto;
 import com.zee.reporting.permission.Permission;
+import com.zee.reporting.proxy.PaymentClientUtil;
+import com.zee.reporting.proxy.dto.UserTransactionResponse;
 import com.zee.reporting.service.ReportingService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.GET;
@@ -26,9 +28,10 @@ import java.util.List;
 @Path("payment")
 @RequiredArgsConstructor
 @Produces(value = MediaType.APPLICATION_JSON)
-public class PaymentController {
+public class ReportingController {
 
     private final ReportingService reportingService;
+    private final PaymentClientUtil paymentClientUtil;
 
     @GET
     @Path("range")
@@ -55,6 +58,22 @@ public class PaymentController {
                         .successful(true)
                         .messageType(MessageType.SUCCESS)
                         .data(reportingService.getPaginatedPayments(pageSize))
+                        .build()
+                )
+                .build();
+
+    }
+
+
+    @GET
+    @Path("transactions")
+    @RolesAllowed(value = Permission.VIEW_PAYMENT)
+    public Response getPaymentsTransactions(@QueryParam("startDate")LocalDate startDate) {
+
+        return Response.ok(ApiResponse.<UserTransactionResponse>builder()
+                        .successful(true)
+                        .messageType(MessageType.SUCCESS)
+                        .data(paymentClientUtil.getUserTransactions(startDate))
                         .build()
                 )
                 .build();

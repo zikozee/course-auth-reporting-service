@@ -28,18 +28,25 @@ quarkus:
     read-timeout: 30000
     connect-timeout: 2000
     connection-pool-size: 10
+    # ensure the host ia the same i.e 127.0.0.1 else you will have issues
+    # in prod it will be a domain name so no issue will occur
+    auth-server:
+      uri: ${AUTH_SERVER_URI:http://127.0.0.1:8080}
+    payment-server:
+      uri: ${PAYMENT_SERVER_URI:http://localhost:9090/payment}
 
   oidc:
     roles:
       role-claim-path:
         - "authorities"
     auth-server-url: ${AUTH_SERVER_URI:http://127.0.0.1:8080}
-    client-id: ${CLIENT_ID:oidc-client4}
-    credentials:
-      secret: ${CREDENTIALS_SECRET:secret4}
     token:
       #This property must be changed with the actual public host-name, It will be varying from server to server.
       issuer: ${OIDC_ISSUER:any}
       #Audience validation
       audience: "reporting-service"
 
+payment:
+  auth:
+    client-id: ${PAYMENT_CLIENT_ID:oidc-client3}
+    client-secret: ${PAYMENT_CLIENT_SECRET:secret3}
