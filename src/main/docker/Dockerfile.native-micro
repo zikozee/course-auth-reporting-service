@@ -14,6 +14,9 @@
 #
 # docker build -f src/main/docker/Dockerfile.native-micro -t course.auth.reporting.demo:1.0 .
 #
+# one command:
+#  mvn package -Dnative  -Dquarkus.native.container-build=true -Dquarkus.native.container-runtime=docker && docker build -f src/main/docker/Dockerfile.native-micro -t course.auth.reporting.demo:1.0 .
+#
 # Then run the container using:
 #
 # docker run -i --rm -p 8080:8080 quarkus/auth-reporting-service
