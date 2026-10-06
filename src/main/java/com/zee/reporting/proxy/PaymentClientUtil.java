@@ -45,8 +45,8 @@ public class PaymentClientUtil {
             return userTransactionsResponse.getEntity().getData();
 
         } catch (RuntimeException e) {
-            log.error("Unable to fetch user transactions");
-            throw new RuntimeException("Unable to fetch user transactions");
+            log.error("Unable to fetch user transactions", e);
+            throw new RuntimeException("Unable to fetch user transactions", e);
         }
     }
 

@@ -3,6 +3,7 @@ package com.zee.reporting.dto;
 
 import com.zee.reporting.datatype.Mode;
 import com.zee.reporting.datatype.PaymentStatus;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ import java.time.Instant;
 
 
 @Builder
+@RegisterForReflection
 public record PaymentDto(
         String transactionReference,
         BigDecimal price,

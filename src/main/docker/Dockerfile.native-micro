@@ -6,11 +6,13 @@
 #
 # Before building the container image run:
 #
-# ./mvnw package -Dnative
+# ./mvnw package -Dnative # if local native-image is availale
 #
+#./mvnw package -Dnative  -Dquarkus.native.container-build=true -Dquarkus.native.container-runtime=docker
+
 # Then, build the image with:
 #
-# docker build -f src/main/docker/Dockerfile.native-micro -t quarkus/auth-reporting-service .
+# docker build -f src/main/docker/Dockerfile.native-micro -t course.auth.reporting.demo:1.0 .
 #
 # Then run the container using:
 #
@@ -26,7 +28,7 @@ RUN chown 1001 /work \
     && chown 1001:root /work
 COPY --chown=1001:root --chmod=0755 target/*-runner /work/application
 
-EXPOSE 8080
+EXPOSE 7070
 USER 1001
 
 ENTRYPOINT ["./application", "-Dquarkus.http.host=0.0.0.0"]

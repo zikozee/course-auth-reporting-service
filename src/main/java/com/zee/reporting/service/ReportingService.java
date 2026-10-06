@@ -35,14 +35,15 @@ public class ReportingService {
 
         if(startDate.isAfter(endDate)){
             startDate  = LocalDate.now(ZoneId.systemDefault()).minusDays(7);
-            endDate  = LocalDate.now(ZoneId.systemDefault());
+            endDate  = LocalDate.now(ZoneId.systemDefault()).plusDays(1);
         }
 
         List<Payment> payments = reportRepository.paymentsBetween(
                 startDate.atStartOfDay(ZoneId.systemDefault()).toInstant(),
-                endDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                endDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         return payments.stream()
+                .peek(payment -> log.info("payment received:{}", payment.toString()))
                 .map(mapperUtil::toPaymentDto)
                 .toList();
     }
@@ -52,6 +53,7 @@ public class ReportingService {
         List<Payment> payments = reportRepository.page(size);
 
         return payments.stream()
+                .peek(payment -> log.info("payment pagination received:{}", payment.toString()))
                 .map(mapperUtil::toPaymentDto)
                 .toList();
     }

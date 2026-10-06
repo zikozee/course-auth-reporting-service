@@ -3,7 +3,9 @@
 #
 # Before building the container image run:
 #
-# ./mvnw package -Dnative
+# ./mvnw package -Dnative # if local native-image is availale
+#
+#./mvnw package -Dnative  -Dquarkus.native.container-build=true -Dquarkus.native.container-runtime=docker
 #
 # Then, build the image with:
 #
