@@ -15,31 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: test
 
-    services:
-      postgres:
-        image: 'postgres:18'
-        env:
-          POSTGRES_DB: auth_demo
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASS }}
-          POSTGRES_USER: ${{ secrets.DB_USER }}
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
-      redis:
-        image: redis:alpine
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd="redis-cli ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
     steps:
       - name: Get Code
         uses: actions/checkout@v7
@@ -60,7 +35,7 @@ jobs:
           name: reporting-artifact
           path: |
             target/*-runner
-            Dockerfile
+            src/main/docker/Dockerfile.native-micro
           overwrite: 'true'
           retention-days: 1
 
@@ -88,7 +63,7 @@ jobs:
         env:
           IMAGE_TAG: ${{ steps.image_tag.outputs.tag_name }}
         run: |
-          docker build -t \
+          docker build -f src/main/docker/Dockerfile.native-micro -t \
             "${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${SERVICE_PREFIX}:${IMAGE_TAG}" .
 
       - name: Authenticate to Google Cloud
